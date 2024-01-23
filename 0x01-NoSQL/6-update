@@ -1,5 +1,5 @@
 // lists all documents with name="Holberton school"
-db.school.findOneAndUpdate({
+db.school.Update({
     name:{$eq:"Holberton school"}},
     {$set: { address:"972 Mission street" }},
     { multi: true }
