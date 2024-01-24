@@ -11,11 +11,11 @@ from functools import wraps
 store_cache = redis.Redis()
 
 
-def track_url_access(method):
-    """counter"""
+def trackUrlAccess(method):
+    """counter function"""
 
     @wraps(method)
-    def decorated_function(url):
+    def decoratedFunction(url):
         cached_key = f"cached:{url}"
         cached_data = store_cache.get(cached_key)
 
@@ -31,10 +31,10 @@ def track_url_access(method):
 
         return html
 
-    return decorated_function
+    return decoratedFunction
 
 
-@track_url_access
+@trackUrlAccess
 def get_page(url: str) -> str:
     """Returns content"""
     response = requests.get(url)
