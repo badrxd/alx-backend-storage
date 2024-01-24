@@ -3,6 +3,20 @@
 import redis
 import uuid
 from typing import Union, Optional, Callable
+from functools import wraps
+
+
+def count_calls(method: Callable) -> Callable:
+    """counter"""
+
+    @wraps(method)
+    def wrapper(self, *args, **kwargs):
+        """wrap the decorated"""
+        the_key = method.__qualname__
+        self._redis.incr(the_key)
+        return method(self, *args, **kwargs)
+
+    return wrapper
 
 
 class Cache:
@@ -21,6 +35,7 @@ class Cache:
         self._redis.set(id, data)
         return id
 
+    @count_calls
     def get(self, key: str, fn: Optional[Callable] =
             None) -> Union[str, bytes, int, float]:
         """convert data using fn"""
