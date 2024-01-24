@@ -18,6 +18,21 @@ def count_calls(method: Callable) -> Callable:
 
     return wrapper
 
+def call_history(method: Callable) -> Callable:
+    """store history  """
+    the_key = method.__qualname__
+    inputs = the_key + ":inputs"
+    outputs = the_key + ":outputs"
+
+    @wraps(method)
+    def wrapper(self, *args, **kwargs):
+        """ wrap the function """
+        self._redis.rpush(inputs, str(args))
+        result = method(self, *args, **kwargs)
+        self._redis.rpush(outputs, str(result))
+        return result
+    return wrapper
+
 
 class Cache:
     """Cache class"""
