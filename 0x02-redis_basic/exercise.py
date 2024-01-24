@@ -5,10 +5,10 @@ import uuid
 from typing import Union
 
 
-class Cache():
+class Cache:
     """Cache class"""
 
-    def __init__(self) -> None:
+    def __init__(self):
         """init class cache"""
 
         self._redis = redis.Redis()
