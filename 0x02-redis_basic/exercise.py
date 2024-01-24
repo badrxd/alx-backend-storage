@@ -48,9 +48,9 @@ def replay(redis_instance: redis.Redis, method: Callable) -> List[str]:
 
     print(f"{method_name} was called {len(input_history)} times:")
     for input_data, output_data in zip(input_history, output_history):
+        dec = input_data.decode('utf-8')
         print(
-            f"{method_name}(*{input_data.decode('utf-8'\
-            )}) -> {output_data.decode('utf-8')}")
+            f"{method_name}(*{dec}) ->{output_data.decode('utf-8')}")
 
 
 class Cache:
@@ -65,9 +65,9 @@ class Cache:
     @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """insert data, and return the key"""
-        id = str(uuid.uuid4())
-        self._redis.set(id, data)
-        return id
+        key = str(uuid.uuid4())
+        self._redis.set(key, data)
+        return key
 
     def get(self, key: str,
             fn: Optional[Callable] = None) -> Union[str, bytes, int, float]:
